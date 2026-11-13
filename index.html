@@ -275,11 +275,13 @@
                     Para que no falte nada en la mesa y celebremos sin prisas.
                 </p>
 
-                <!-- Barra de confirmación -->
+                <!-- Barra de confirmación (comentada) -->
+                <!--
                 <div class="mt-4 pt-3 border-t border-pine-700/80 flex items-center justify-between text-xs">
                     <span class="font-medium text-amber-200" id="cena-porcentaje">Cargando platillos...</span>
                     <span class="text-[11px] bg-gold-500/20 text-gold-300 border border-gold-400/40 px-2 py-0.5 rounded-full font-bold">24 de Diciembre</span>
                 </div>
+                -->
             </div>
 
             <!-- Categorías de la comida -->
@@ -322,7 +324,8 @@
                         </div>
                     </div>
 
-                    <!-- Dirección -->
+                    <!-- Punto de Encuentro (comentado por ahora) -->
+                    <!--
                     <div class="flex items-start gap-3 bg-kraft-100/70 p-3 rounded-2xl border border-kraft-200">
                         <span class="text-2xl">🏡</span>
                         <div class="flex-1">
@@ -331,14 +334,17 @@
                             <p id="info-direccion" class="text-stone-600 mt-0.5 leading-relaxed">Calle Los Pinos #123</p>
                         </div>
                     </div>
+                    -->
 
                 </div>
 
-                <!-- Botón Google Maps -->
+                <!-- Botón Google Maps (comentado por ahora) -->
+                <!--
                 <a id="info-maps-btn" href="#" target="_blank" class="mt-4 flex items-center justify-center gap-2 w-full py-3.5 px-4 bg-pine-800 hover:bg-pine-900 text-white rounded-2xl text-xs font-bold transition shadow-md">
                     <span>📍</span>
                     <span>Abrir ubicación en Google Maps</span>
                 </a>
+                -->
 
                 <!-- Nota con pespunte cosido -->
                 <div class="mt-5 pt-4 border-t-2 border-dashed border-kraft-300">
@@ -399,10 +405,13 @@
 
                 document.getElementById('info-fecha').innerText = INFO_EVENTO.fecha || '24 de Diciembre';
                 document.getElementById('info-hora').innerText = INFO_EVENTO.hora || '8:00 PM';
-                document.getElementById('info-lugar').innerText = INFO_EVENTO.lugar || 'Casa de la Familia';
-                document.getElementById('info-direccion').innerText = INFO_EVENTO.direccion || '';
-                if (INFO_EVENTO.googleMapsUrl) {
-                    document.getElementById('info-maps-btn').href = INFO_EVENTO.googleMapsUrl;
+                const elLugar = document.getElementById('info-lugar');
+                if (elLugar) elLugar.innerText = INFO_EVENTO.lugar || 'Casa de la Familia';
+                const elDir = document.getElementById('info-direccion');
+                if (elDir) elDir.innerText = INFO_EVENTO.direccion || '';
+                const elMaps = document.getElementById('info-maps-btn');
+                if (elMaps && INFO_EVENTO.googleMapsUrl) {
+                    elMaps.href = INFO_EVENTO.googleMapsUrl;
                 }
             }
 
@@ -621,10 +630,11 @@
         // 4. Renderizado del Menú de Nochebuena
         function renderCena() {
             const container = document.getElementById('lista-cena');
+            if (!container) return;
             container.innerHTML = '';
 
             if (typeof ORGANIZACION_CENA === 'undefined' || ORGANIZACION_CENA.length === 0) {
-                container.innerHTML = '<p class="text-center text-xs text-stone-500 py-6">Sin platillos asignados aún.</p>';
+                container.innerHTML = '';
                 return;
             }
 
@@ -675,7 +685,10 @@
                 container.appendChild(card);
             });
 
-            document.getElementById('cena-porcentaje').innerText = `${listos} de ${total} cosas confirmadas`;
+            const pctEl = document.getElementById('cena-porcentaje');
+            if (pctEl) {
+                pctEl.innerText = `${listos} de ${total} cosas confirmadas`;
+            }
         }
 
         // 5. Cambio de pestañas
