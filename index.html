@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Navidad en Familia • Intercambio y Fiesta</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    colors: {
+                        navidad: {
+                            red: '#B91C1C',
+                            darkRed: '#7F1D1D',
+                            green: '#065F46',
+                            darkGreen: '#064E3B',
+                            gold: '#D97706',
+                            cream: '#FEFDFB'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Estrellitas o destellos sutiles */
+        .snow-dot {
+            position: fixed;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: snowfall linear infinite;
+        }
+        @keyframes snowfall {
+            0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(105vh) translateX(25px); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800 font-sans min-h-screen pb-20 selection:bg-red-200">
+
+    <!-- Copos de nieve decorativos ligeros -->
+    <div id="snow-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- ENCABEZADO FESTIVO -->
+    <header class="relative z-10 bg-gradient-to-b from-red-900 via-red-800 to-red-900 text-white pt-8 pb-7 px-4 shadow-lg text-center border-b-4 border-amber-500/80">
+        <div class="max-w-md mx-auto">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-400 text-stone-900 shadow-sm mb-3">
+                <span>✨</span> Especial Familia 2024 <span>🎄</span>
+            </span>
+            <h1 id="header-title" class="font-serif text-3xl font-bold tracking-tight text-amber-100 drop-shadow-sm">
+                Navidad en Familia
+            </h1>
+            <p id="header-subtitle" class="text-red-100/90 text-sm mt-1 font-medium">
+                Intercambio de regalos & Cena Navideña
+            </p>
+            
+            <!-- Badge de Presupuesto -->
+            <div id="presupuesto-box" class="mt-4 inline-flex items-center gap-2 bg-black/25 backdrop-blur-sm border border-amber-300/30 rounded-xl px-3.5 py-1.5 text-xs text-amber-200 font-medium">
+                <span>🎁</span>
+                <span>Presupuesto sugerido: <strong id="presupuesto-val" class="text-white font-bold">$500 - $600 MXN</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGACIÓN TIPO PESTAÑAS (TABS) STICKY -->
+    <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-stone-200">
+        <div class="max-w-md mx-auto grid grid-cols-3 p-1.5 gap-1 text-center text-xs font-bold">
+            <button id="tab-btn-regalos" onclick="cambiarTab('regalos')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all bg-red-700 text-white shadow-sm">
+                <span class="text-base">🎁</span>
+                <span>Intercambio</span>
+            </button>
+            <button id="tab-btn-cena" onclick="cambiarTab('cena')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100">
+                <span class="text-base">🍗</span>
+                <span>¿Quién lleva?</span>
+            </button>
+            <button id="tab-btn-info" onclick="cambiarTab('info')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100">
+                <span class="text-base">📍</span>
+                <span>Lugar y Hora</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="relative z-10 max-w-md mx-auto px-4 pt-4">
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 1: INTERCAMBIO (DESEOS Y TALLAS) -->
+        <!-- ========================================== -->
+        <section id="tab-regalos" class="space-y-4">
+            
+            <!-- Barra de Búsqueda Rápida -->
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    oninput="filtrarFamilia()"
+                    placeholder="Buscar a tu amigo secreto (ej. Carmen, Jorge)..." 
+                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-white border border-stone-200 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 shadow-sm"
+                >
+                <button id="clear-search" onclick="limpiarBusqueda()" class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Contador de personas -->
+            <div class="flex items-center justify-between text-xs text-stone-500 px-1">
+                <span id="contador-personas">Cargando participantes...</span>
+                <span class="text-stone-400">Toca para ver detalles</span>
+            </div>
+
+            <!-- Lista de Tarjetas de la Familia -->
+            <div id="lista-familia" class="space-y-4">
+                <!-- Se llena dinámicamente desde data.js -->
+            </div>
+
+            <!-- Estado sin resultados -->
+            <div id="no-results" class="hidden text-center py-12 bg-white rounded-3xl border border-dashed border-stone-300 p-6">
+                <span class="text-4xl">🔍</span>
+                <h3 class="font-bold text-stone-700 mt-2">No encontramos a esa persona</h3>
+                <p class="text-xs text-stone-500 mt-1">Verifica el nombre o limpia la búsqueda.</p>
+                <button onclick="limpiarBusqueda()" class="mt-3 px-4 py-1.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full hover:bg-red-200 transition">
+                    Ver a todos
+                </button>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 2: ¿QUIÉN LLEVA QUÉ? (CENA / FIESTA) -->
+        <!-- ========================================== -->
+        <section id="tab-cena" class="hidden space-y-4">
+            
+            <div class="bg-gradient-to-r from-emerald-800 to-green-700 text-white rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="text-3xl bg-white/20 p-2 rounded-xl">🍗</div>
+                    <div>
+                        <h2 class="font-bold text-base">Organización de la Cena</h2>
+                        <p class="text-emerald-100 text-xs mt-0.5">Para que no falte nada y nadie repita platillo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de categorías de comida/fiesta -->
+            <div id="lista-cena" class="space-y-4">
+                <!-- Se llena dinámicamente desde data.js -->
+            </div>
+
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 3: INFORMACIÓN DEL EVENTO -->
+        <!-- ========================================== -->
+        <section id="tab-info" class="hidden space-y-4">
+            
+            <!-- Tarjeta Principal de Cita -->
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-stone-200 space-y-4">
+                
+                <div class="flex items-center gap-3 border-b border-stone-100 pb-4">
+                    <div class="w-11 h-11 bg-red-100 text-red-700 rounded-2xl flex items-center justify-center text-xl font-bold">
+                        📅
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">¿Cuándo?</span>
+                        <h3 id="info-fecha" class="font-bold text-stone-800 text-sm">24 de Diciembre</h3>
+                        <p id="info-hora" class="text-stone-500 text-xs">8:00 PM</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 border-b border-stone-100 pb-4">
+                    <div class="w-11 h-11 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-xl font-bold shrink-0">
+                        🏡
+                    </div>
+                    <div class="flex-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">¿Dónde?</span>
+                        <h3 id="info-lugar" class="font-bold text-stone-800 text-sm">Casa de los Abuelos</h3>
+                        <p id="info-direccion" class="text-stone-600 text-xs mt-0.5">Calle Los Pinos #123</p>
+                        
+                        <a id="info-maps-btn" href="#" target="_blank" class="mt-3.5 inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                            Abrir ubicación en Google Maps
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Avisos o recordatorios importantes -->
+                <div class="bg-amber-50 rounded-2xl p-3.5 border border-amber-200/80 text-amber-900 text-xs space-y-2">
+                    <div class="font-bold flex items-center gap-1.5 text-amber-950">
+                        <span>🔔</span> Recomendaciones para la noche:
+                    </div>
+                    <ul class="space-y-1 text-[11px] list-disc list-inside text-amber-900/90 leading-relaxed">
+                        <li>Llevar los regalos etiquetados con el nombre del destinatario.</li>
+                        <li>Traer suéter o cobijita abrigadora para la noche.</li>
+                        <li>¡Muchas ganas de convivir, cantar y pasarla en familia!</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Botón para compartir por WhatsApp -->
+            <button onclick="compartirWhatsApp()" class="w-full py-3.5 px-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition">
+                <span>💬</span> Reenviar enlace al grupo de WhatsApp
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- TOAST NOTIFICACIÓN -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white text-xs py-2.5 px-4 rounded-full shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none">
+        Enlace copiado al portapapeles 📋
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-12 text-center text-xs text-stone-400 space-y-1">
+        <p>Hecho con ❤️ para la familia • ¡Felices Fiestas!</p>
+    </footer>
+
+    <!-- SCRIPT DE DATOS -->
+    <script src="data.js"></script>
+
+    <!-- SCRIPT DE INTERACTIVIDAD -->
+    <script>
+        // Inicializar datos en la vista
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarEncabezado();
+            renderFamilia(FAMILIA);
+            renderCena();
+            generarNieve();
+        });
+
+        // 1. Cargar info del evento
+        function cargarEncabezado() {
+            if (typeof INFO_EVENTO !== 'undefined') {
+                if (INFO_EVENTO.titulo) document.getElementById('header-title').innerText = INFO_EVENTO.titulo;
+                if (INFO_EVENTO.subtitulo) document.getElementById('header-subtitle').innerText = INFO_EVENTO.subtitulo;
+                if (INFO_EVENTO.presupuestoIntercambio) {
+                    document.getElementById('presupuesto-val').innerText = INFO_EVENTO.presupuestoIntercambio;
+                } else {
+                    document.getElementById('presupuesto-box').classList.add('hidden');
+                }
+
+                // Pestaña Info
+                document.getElementById('info-fecha').innerText = INFO_EVENTO.fecha || '';
+                document.getElementById('info-hora').innerText = INFO_EVENTO.hora || '';
+                document.getElementById('info-lugar').innerText = INFO_EVENTO.lugar || '';
+                document.getElementById('info-direccion').innerText = INFO_EVENTO.direccion || '';
+                
+                if (INFO_EVENTO.googleMapsUrl) {
+                    document.getElementById('info-maps-btn').href = INFO_EVENTO.googleMapsUrl;
+                }
+            }
+        }
+
+        // 2. Renderizar lista de la Familia para el Intercambio
+        function renderFamilia(lista) {
+            const container = document.getElementById('lista-familia');
+            const noResults = document.getElementById('no-results');
+            const contador = document.getElementById('contador-personas');
+
+            container.innerHTML = '';
+            contador.innerText = `${lista.length} participante${lista.length === 1 ? '' : 's'}`;
+
+            if (lista.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            lista.forEach((persona) => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-stone-200/90 transition hover:shadow-md";
+
+                // Formatear tallas
+                let tallasHtml = '';
+                if (persona.tallas && Object.keys(persona.tallas).length > 0) {
+                    const badges = Object.entries(persona.tallas).map(([tipo, val]) => {
+                        let icono = '👕';
+                        if (tipo.toLowerCase().includes('calzado') || tipo.toLowerCase().includes('zapato')) icono = '👟';
+                        if (tipo.toLowerCase().includes('pantalon') || tipo.toLowerCase().includes('pantalón')) icono = '👖';
+                        
+                        return `
+                            <div class="bg-stone-50 border border-stone-200/80 rounded-xl px-2.5 py-1.5 text-center">
+                                <span class="text-[10px] uppercase font-bold text-stone-400 block">${tipo}</span>
+                                <span class="text-xs font-bold text-stone-800">${icono} ${val}</span>
+                            </div>
+                        `;
+                    }).join('');
+
+                    tallasHtml = `
+                        <div class="mt-3">
+                            <span class="text-[11px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">Tallas:</span>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                ${badges}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Lo que SÍ desea
+                let siHtml = '';
+                if (persona.siDesea && persona.siDesea.length > 0) {
+                    const items = persona.siDesea.map(d => `
+                        <li class="flex items-start gap-2 text-xs text-stone-700">
+                            <span class="text-emerald-600 font-bold shrink-0 mt-0.5">✓</span>
+                            <span>${d}</span>
+                        </li>
+                    `).join('');
+                    siHtml = `
+                        <div class="mt-3.5 bg-emerald-50/70 border border-emerald-100 rounded-2xl p-3">
+                            <div class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                                <span>🎁</span> Lo que SÍ le gustaría:
+                            </div>
+                            <ul class="space-y-1.5">
+                                ${items}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                // Lo que NO desea
+                let noHtml = '';
+                if (persona.noDesea && persona.noDesea.length > 0) {
+                    const items = persona.noDesea.map(d => `
+                        <li class="flex items-start gap-2 text-xs text-red-800">
+                            <span class="text-red-500 font-bold shrink-0 mt-0.5">✕</span>
+                            <span>${d}</span>
+                        </li>
+                    `).join('');
+                    noHtml = `
+                        <div class="mt-2.5 bg-red-50/70 border border-red-100 rounded-2xl p-3">
+                            <div class="text-[11px] font-bold text-red-800 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                                <span>⛔</span> Por favor evitar (NO):
+                            </div>
+                            <ul class="space-y-1.5">
+                                ${items}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                // Gustos extras
+                let gustosHtml = '';
+                if (persona.gustosExtras) {
+                    gustosHtml = `
+                        <div class="mt-3 text-[11px] text-stone-500 italic bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                            💡 <strong>Tip / Hobbies:</strong> ${persona.gustosExtras}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-2xl shadow-inner shrink-0">
+                            ${persona.avatar || '🎁'}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-bold text-stone-900 text-base truncate">${persona.nombre}</h3>
+                            ${persona.apodo ? `<p class="text-xs text-stone-400 font-medium truncate">${persona.apodo}</p>` : ''}
+                        </div>
+                    </div>
+
+                    ${tallasHtml}
+                    ${siHtml}
+                    ${noHtml}
+                    ${gustosHtml}
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // 3. Filtrar personas en tiempo real
+        function filtrarFamilia() {
+            const input = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search');
+            const term = input.value.trim().toLowerCase();
+
+            if (term.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            const filtrados = FAMILIA.filter(p => {
+                const nombre = p.nombre.toLowerCase();
+                const apodo = (p.apodo || '').toLowerCase();
+                const gustos = (p.gustosExtras || '').toLowerCase();
+                const deseos = (p.siDesea || []).join(' ').toLowerCase();
+                return nombre.includes(term) || apodo.includes(term) || gustos.includes(term) || deseos.includes(term);
+            });
+
+            renderFamilia(filtrados);
+        }
+
+        function limpiarBusqueda() {
+            const input = document.getElementById('search-input');
+            input.value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+            renderFamilia(FAMILIA);
+            input.focus();
+        }
+
+        // 4. Renderizar lista de la Cena / Organización
+        function renderCena() {
+            const container = document.getElementById('lista-cena');
+            container.innerHTML = '';
+
+            if (typeof ORGANIZACION_CENA === 'undefined' || ORGANIZACION_CENA.length === 0) {
+                container.innerHTML = '<p class="text-center text-xs text-stone-400">Sin asignar aún.</p>';
+                return;
+            }
+
+            ORGANIZACION_CENA.forEach(cat => {
+                const catCard = document.createElement('div');
+                catCard.className = "bg-white rounded-3xl p-4 shadow-sm border border-stone-200";
+
+                const itemsHtml = cat.items.map(item => {
+                    const isConfirmado = (item.estado || '').toLowerCase() === 'confirmado';
+                    const badgeClass = isConfirmado 
+                        ? 'bg-emerald-100 text-emerald-800 border-emerald-200' 
+                        : 'bg-amber-100 text-amber-800 border-amber-200';
+
+                    return `
+                        <div class="py-2.5 border-b border-stone-100 last:border-0 flex items-start justify-between gap-3">
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-stone-800 leading-snug">${item.tarea}</p>
+                                <p class="text-[11px] text-stone-500 mt-0.5 flex items-center gap-1">
+                                    <span>👤</span> Encargado: <strong class="text-stone-700">${item.encargado}</strong>
+                                </p>
+                            </div>
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full border ${badgeClass} shrink-0">
+                                ${item.estado || 'Pendiente'}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                catCard.innerHTML = `
+                    <h3 class="font-bold text-stone-800 text-sm border-b border-stone-100 pb-2 mb-2 flex items-center justify-between">
+                        <span>${cat.categoria}</span>
+                        <span class="text-[11px] font-normal text-stone-400">${cat.items.length} items</span>
+                    </h3>
+                    <div class="divide-y divide-stone-50">
+                        ${itemsHtml}
+                    </div>
+                `;
+
+                container.appendChild(catCard);
+            });
+        }
+
+        // 5. Cambio de Tabs
+        function cambiarTab(tab) {
+            const tabs = ['regalos', 'cena', 'info'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tab) {
+                    section.classList.remove('hidden');
+                    btn.className = "tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all bg-red-700 text-white shadow-sm font-bold";
+                } else {
+                    section.classList.add('hidden');
+                    btn.className = "tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100 font-bold";
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 6. Compartir por WhatsApp
+        function compartirWhatsApp() {
+            const url = window.location.href;
+            const texto = `🎄 *${INFO_EVENTO.titulo || 'Navidad en Familia'}* 🎄\nAquí están las tallas, deseos del intercambio y lo que le toca llevar a cada quién a la cena:\n👉 ${url}`;
+            const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        // 7. Efecto ligero de copos de nieve
+        function generarNieve() {
+            const snowContainer = document.getElementById('snow-container');
+            const totalDots = 18; // Muy pocos para no alentar teléfonos móviles
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'snow-dot';
+                const size = Math.random() * 4 + 2;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.left = `${Math.random() * 100}vw`;
+                dot.style.animationDuration = `${Math.random() * 6 + 6}s`;
+                dot.style.animationDelay = `${Math.random() * 5}s`;
+                snowContainer.appendChild(dot);
+            }
+        }
+    </script>
+</body>
+</html>
