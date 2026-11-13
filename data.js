@@ -170,6 +170,48 @@ const FAMILIA = [
         ],
         gustosExtras: ""
         */
+    },
+    {
+        id: "Karol",
+        nombre: "Karol",
+//        apodo: "",
+        avatar: "👧",
+        tallas: {
+            blusa: "XS o S (blusa o sudadera)",
+            pantalon: "Talla 3",
+            calzado: "Del 4 MX (tenis)"
+        },
+/*        siDesea: [
+            // "Idea 1",
+            // "Idea 2"
+        ],
+        noDesea: [
+            // "Evitar esto",
+            // "Evitar aquello"
+        ],
+        gustosExtras: ""
+        */
+    },
+    {
+        id: "Juan",
+        nombre: "Juan",
+        apodo: "Cubano",
+        avatar: "👨",
+        tallas: {
+            playera: "Grande (G)",
+            pantalon: "Talla 34",
+            calzado: "Del 7 MX (tenis)"
+        },
+/*        siDesea: [
+            // "Idea 1",
+            // "Idea 2"
+        ],
+        noDesea: [
+            // "Evitar esto",
+            // "Evitar aquello"
+        ],
+        gustosExtras: ""
+        */
     }
 ];
 
