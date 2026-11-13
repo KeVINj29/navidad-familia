@@ -4,14 +4,14 @@
 // =============================================================================
 
 const INFO_EVENTO = {
-    titulo: "Navidad en Familia 2024",
+    titulo: "Navidad en Familia 2026",
     subtitulo: "Intercambio de regalos & Cena Navideña",
-    fecha: "Martes 24 de Diciembre, 2024",
+    fecha: "Martes 24 de Diciembre, 2026",
     hora: "8:00 PM en adelante",
     lugar: "Casa de los Abuelos",
     direccion: "Calle Los Pinos #123, Col. Centro",
     googleMapsUrl: "https://maps.google.com/?q=Los+Pinos+123", // Cambia por tu link real de Maps
-    presupuestoIntercambio: "$500 - $600 MXN", // Opcional, déjalo vacío si no aplica
+    presupuestoIntercambio: "$500 MXN + Caja de Regalo", // Opcional, déjalo vacío si no aplica
 };
 
 // -----------------------------------------------------------------------------
