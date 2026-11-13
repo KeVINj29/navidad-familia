@@ -114,15 +114,41 @@ const FAMILIA = [
             pantalon: "Talla 13",
 //            calzado: ""
         },
-/*        siDesea: [
-            // "Idea 1",
-            // "Idea 2"
+        siDesea: [
+            "Botas de senderismo negras (calzado ancho)",
+            "Chaqueta deportiva blanca con cremallera",
+            "Pantalón cargo de tiro alto azul marino"
         ],
-        */
+        fotos: [
+            { url: "img/edith_botas.jpg", titulo: "Botas de senderismo (antideslizantes)" },
+            { url: "img/edith_chaqueta.jpg", titulo: "Chaqueta deportiva blanca" },
+            { url: "img/edith_pantalon.jpg", titulo: "Pantalón cargo azul marino" }
+        ],
         noDesea: [
             "Tenis no quiero"
         ],
 //        gustosExtras: ""
+    },
+    {
+        id: "Wendy",
+        nombre: "Wendy",
+        apodo: "De Jesus",
+        avatar: "👱‍♀️",
+        tallas: {
+            playera: "XS o S (depende del modelo, casi siempre S)",
+            pantalon: "Talla 3 o 5",
+            calzado: "Del 4 MX"
+        },
+/*        siDesea: [
+            // "Idea 1",
+            // "Idea 2"
+        ],
+        noDesea: [
+            // "Evitar esto",
+            // "Evitar aquello"
+        ],
+        gustosExtras: ""
+        */
     }
 ];
 

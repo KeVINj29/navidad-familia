@@ -388,6 +388,22 @@
         <span id="toast-message" class="font-semibold text-white">Copiado al portapapeles</span>
     </div>
 
+    <!-- MODAL PARA VER FOTO AMPLIADA -->
+    <div id="foto-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4" onclick="cerrarFotoModal()">
+        <div class="relative max-w-sm w-full bg-white rounded-3xl overflow-hidden shadow-2xl border-2 border-kraft-300" onclick="event.stopPropagation()">
+            <div class="p-3 bg-pine-950 text-white flex items-center justify-between">
+                <span id="modal-titulo" class="font-serif font-bold text-sm truncate pr-2 text-amber-100">Foto de referencia</span>
+                <button onclick="cerrarFotoModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold">✕</button>
+            </div>
+            <div class="p-2 bg-stone-900 flex items-center justify-center">
+                <img id="modal-img" src="" alt="Foto ampliada" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+            <div class="p-3 bg-kraft-50 text-center">
+                <button onclick="cerrarFotoModal()" class="px-5 py-2 bg-berry-700 text-white text-xs font-bold rounded-xl shadow">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- PIE DE PÁGINA TRADICIONAL -->
     <footer class="mt-14 text-center text-xs text-stone-500 space-y-1">
         <p class="font-hand text-xl text-berry-700 font-bold">¡Paz, amor y unión en cada hogar!</p>
@@ -532,6 +548,31 @@
                     `;
                 }
 
+                // Fotos o ejemplos de lo que desea
+                let fotosHtml = '';
+                if (persona.fotos && persona.fotos.length > 0) {
+                    const cards = persona.fotos.map(f => `
+                        <div class="bg-white rounded-2xl border border-kraft-300 overflow-hidden shadow-xs">
+                            <img src="${f.url}" alt="${f.titulo || 'Foto de regalo'}" class="w-full h-44 object-cover object-top cursor-pointer active:scale-98 transition-transform" onclick="abrirFotoModal('${f.url}', '${f.titulo || 'Referencia de regalo'}')" loading="lazy">
+                            ${f.titulo ? `<p class="p-2 text-xs font-bold text-stone-800 text-center bg-kraft-50/80 border-t border-kraft-200 line-clamp-1">${f.titulo}</p>` : ''}
+                        </div>
+                    `).join('');
+
+                    fotosHtml = `
+                        <div class="mt-3.5 bg-amber-50/70 border border-amber-200 rounded-2xl p-3.5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-hand text-lg sm:text-xl font-bold text-amber-950 flex items-center gap-1.5">
+                                    <span>📸</span> Fotos de referencia:
+                                </span>
+                                <span class="text-[11px] text-amber-800/80 font-bold">Toca para ampliar</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                                ${cards}
+                            </div>
+                        </div>
+                    `;
+                }
+
                 // Lista de evitar (NO) con sellito rojo
                 let noHtml = '';
                 if (persona.noDesea && persona.noDesea.length > 0) {
@@ -598,6 +639,7 @@
 
                         ${tallasHtml}
                         ${siHtml}
+                        ${fotosHtml}
                         ${noHtml}
                         ${tipHtml}
                     </div>
@@ -786,6 +828,22 @@
                 toast.classList.add('opacity-0', 'translate-y-2');
             }, 2500);
         }
+        // Modal para ampliar fotos de referencia
+        function abrirFotoModal(url, titulo) {
+            document.getElementById('modal-img').src = url;
+            document.getElementById('modal-titulo').innerText = titulo;
+            const modal = document.getElementById('foto-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cerrarFotoModal() {
+            const modal = document.getElementById('foto-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('modal-img').src = '';
+        }
+
         // 8. Nieve ligera
         function initSnowEffect() {
             const container = document.getElementById('snow-container');
