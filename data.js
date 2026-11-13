@@ -84,8 +84,8 @@ const FAMILIA = [
         */
     },
     {
-        id: "Hernesto",
-        nombre: "Hernesto",
+        id: "Ernesto",
+        nombre: "Ernesto",
 //        apodo: "",
         avatar: "🧑",
         tallas: {
