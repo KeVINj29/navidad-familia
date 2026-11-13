@@ -187,22 +187,22 @@
     </header>
 
     <!-- NAVEGADOR DE PESTAÑAS (ESTILO MADERA & LISTÓN) -->
-    <nav class="sticky top-2 z-40 max-w-md mx-auto px-4 -mt-5">
-        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border-2 border-kraft-300 flex items-center justify-between gap-1.5 text-xs sm:text-sm font-bold">
+    <nav class="sticky top-2 z-40 max-w-md mx-auto px-2 sm:px-4 -mt-5">
+        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border-2 border-kraft-300 grid grid-cols-3 gap-1 text-xs sm:text-sm font-bold">
             
-            <button id="tab-btn-regalos" onclick="cambiarTab('regalos')" class="flex-1 py-3 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all bg-berry-700 text-white shadow-md">
-                <span class="text-base">🏷️</span>
-                <span class="truncate">Deseos & Tallas</span>
+            <button id="tab-btn-regalos" onclick="cambiarTab('regalos')" class="py-2.5 px-1 rounded-xl flex items-center justify-center gap-1 transition-all bg-berry-700 text-white shadow-md text-center">
+                <span class="text-sm shrink-0">🏷️</span>
+                <span class="truncate">Deseos</span>
             </button>
 
-            <button id="tab-btn-cena" onclick="cambiarTab('cena')" class="flex-1 py-3 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-700 hover:bg-kraft-100">
-                <span class="text-base">🍗</span>
-                <span class="truncate">La Gran Cena</span>
+            <button id="tab-btn-cena" onclick="cambiarTab('cena')" class="py-2.5 px-1 rounded-xl flex items-center justify-center gap-1 transition-all text-stone-700 hover:bg-kraft-100 text-center">
+                <span class="text-sm shrink-0">🍗</span>
+                <span class="truncate">Cena</span>
             </button>
 
-            <button id="tab-btn-info" onclick="cambiarTab('info')" class="flex-1 py-3 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-700 hover:bg-kraft-100">
-                <span class="text-base">💌</span>
-                <span class="truncate">Lugar y Cita</span>
+            <button id="tab-btn-info" onclick="cambiarTab('info')" class="py-2.5 px-1 rounded-xl flex items-center justify-center gap-1 transition-all text-stone-700 hover:bg-kraft-100 text-center">
+                <span class="text-sm shrink-0">💌</span>
+                <span class="truncate">Cita</span>
             </button>
 
         </div>
@@ -607,11 +607,15 @@
             }
         }
 
-        // 3. Filtrado rápido
+        // 3. Filtrado rápido (busca por nombre, apodo, tallas o deseos)
+        function normalizarTexto(txt) {
+            return (txt || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+        }
+
         function filtrarFamilia() {
             const input = document.getElementById('search-input');
             const clearBtn = document.getElementById('clear-search');
-            const term = input.value.trim().toLowerCase();
+            const term = normalizarTexto(input.value);
 
             if (term.length > 0) {
                 clearBtn.classList.remove('hidden');
@@ -620,14 +624,22 @@
             }
 
             const filtrados = FAMILIA.filter(p => {
-                const nombre = p.nombre.toLowerCase();
-                const apodo = (p.apodo || '').toLowerCase();
-                const gustos = (p.gustosExtras || '').toLowerCase();
-                const deseos = (p.siDesea || []).join(' ').toLowerCase();
-                return nombre.includes(term) || apodo.includes(term) || gustos.includes(term) || deseos.includes(term);
+                const nombre = normalizarTexto(p.nombre);
+                const apodo = normalizarTexto(p.apodo);
+                const gustos = normalizarTexto(p.gustosExtras);
+                const deseos = normalizarTexto((p.siDesea || []).join(' '));
+                const noDeseos = normalizarTexto((p.noDesea || []).join(' '));
+                const tallas = normalizarTexto(Object.values(p.tallas || {}).join(' '));
+
+                return nombre.includes(term) || 
+                       apodo.includes(term) || 
+                       gustos.includes(term) || 
+                       deseos.includes(term) || 
+                       noDeseos.includes(term) || 
+                       tallas.includes(term);
             });
 
-            // Si está buscando un nombre, auto-desplegar para que vea los datos al momento
+            // Si está buscando, auto-desplegar para que vea los datos al momento
             renderFamilia(filtrados, term.length > 0);
         }
 
@@ -711,10 +723,10 @@
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (t === tab) {
                     sec.classList.remove('hidden');
-                    btn.className = "flex-1 py-2.5 px-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all bg-berry-700 text-white shadow-md font-bold";
+                    btn.className = "py-2.5 px-1 rounded-xl flex items-center justify-center gap-1 transition-all bg-berry-700 text-white shadow-md font-bold text-center";
                 } else {
                     sec.classList.add('hidden');
-                    btn.className = "flex-1 py-2.5 px-1.5 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-700 hover:bg-kraft-100 font-bold";
+                    btn.className = "py-2.5 px-1 rounded-xl flex items-center justify-center gap-1 transition-all text-stone-700 hover:bg-kraft-100 font-bold text-center";
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
