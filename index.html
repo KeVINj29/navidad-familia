@@ -1,258 +1,341 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Navidad en Familia • Intercambio y Fiesta</title>
+    <title>Navidad en Familia 2024 • Intercambio & Fiesta</title>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    
+    <!-- Google Fonts: Plus Jakarta Sans (ultra limpio) + Playfair Display (editorial festivo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
                     },
                     colors: {
-                        navidad: {
-                            red: '#B91C1C',
-                            darkRed: '#7F1D1D',
-                            green: '#065F46',
-                            darkGreen: '#064E3B',
-                            gold: '#D97706',
-                            cream: '#FEFDFB'
+                        cozy: {
+                            bg: '#FDFBF7',         // Blanco crema cálido, no cansa la vista
+                            card: '#FFFFFF',
+                            red: '#991B1B',        // Rojo carmesí navideño elegante
+                            deepRed: '#701A1A',
+                            green: '#166534',      // Verde pino navideño
+                            forest: '#14532D',
+                            gold: '#B45309',       // Dorado / Ámbar festivo
+                            goldLight: '#FEF3C7',
+                            border: '#EBE5DF'
                         }
+                    },
+                    boxShadow: {
+                        'cozy': '0 4px 20px -2px rgba(120, 53, 15, 0.05), 0 2px 6px -1px rgba(0,0,0,0.03)',
+                        'festive': '0 10px 25px -5px rgba(153, 27, 27, 0.2)'
                     }
                 }
             }
         }
     </script>
+
     <style>
-        body {
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* Estrellitas o destellos sutiles */
-        .snow-dot {
+        /* Nieve ligera optimizada para GPU móvil */
+        .snowflake {
             position: fixed;
-            background-color: white;
-            border-radius: 50%;
+            top: -10px;
+            color: #ffffff;
+            font-size: 14px;
             pointer-events: none;
-            opacity: 0.6;
-            animation: snowfall linear infinite;
+            z-index: 1;
+            opacity: 0.75;
+            user-select: none;
+            animation: fall linear infinite;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
         }
-        @keyframes snowfall {
-            0% { transform: translateY(-10px) translateX(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(105vh) translateX(25px); opacity: 0; }
+        @keyframes fall {
+            0% { transform: translateY(0vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.85; }
+            90% { opacity: 0.85; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Destello dorado sutil */
+        .gold-shimmer {
+            background: linear-gradient(90deg, #FDE68A 0%, #F59E0B 50%, #FDE68A 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shimmer 4s ease infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800 font-sans min-h-screen pb-20 selection:bg-red-200">
+<body class="bg-cozy-bg text-stone-800 font-sans min-h-screen pb-24 antialiased selection:bg-red-100 selection:text-red-900">
 
-    <!-- Copos de nieve decorativos ligeros -->
-    <div id="snow-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+    <!-- Contenedor de nieve ligera (12 copos flotantes) -->
+    <div id="snow-field" class="fixed inset-0 pointer-events-none overflow-hidden z-10" aria-hidden="true"></div>
 
-    <!-- ENCABEZADO FESTIVO -->
-    <header class="relative z-10 bg-gradient-to-b from-red-900 via-red-800 to-red-900 text-white pt-8 pb-7 px-4 shadow-lg text-center border-b-4 border-amber-500/80">
-        <div class="max-w-md mx-auto">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-400 text-stone-900 shadow-sm mb-3">
-                <span>✨</span> Especial Familia 2024 <span>🎄</span>
-            </span>
-            <h1 id="header-title" class="font-serif text-3xl font-bold tracking-tight text-amber-100 drop-shadow-sm">
+    <!-- ENCABEZADO FESTIVO PREMIUM -->
+    <header class="relative bg-gradient-to-b from-stone-900 via-stone-900 to-cozy-deepRed text-white pt-8 pb-7 px-4 shadow-lg overflow-hidden border-b-2 border-amber-500/30">
+        
+        <!-- Elementos decorativos de fondo (luces desenfocadas cálidas) -->
+        <div class="absolute -top-16 -left-16 w-44 h-44 bg-red-600/25 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-10 -right-10 w-44 h-44 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-40"></div>
+
+        <div class="relative max-w-md mx-auto text-center">
+            
+            <!-- Etiqueta decorativa superior -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 backdrop-blur-md border border-white/15 text-amber-200 mb-3.5 shadow-sm">
+                <span>✨</span>
+                <span class="tracking-wide">Fiesta & Tradición Familiar</span>
+                <span>🎄</span>
+            </div>
+
+            <!-- Título Principal -->
+            <h1 id="header-title" class="font-serif text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-sm leading-tight">
                 Navidad en Familia
             </h1>
-            <p id="header-subtitle" class="text-red-100/90 text-sm mt-1 font-medium">
+            
+            <p id="header-subtitle" class="text-stone-300 text-xs sm:text-sm mt-1.5 font-medium max-w-xs mx-auto leading-relaxed">
                 Intercambio de regalos & Cena Navideña
             </p>
-            
-            <!-- Badge de Presupuesto -->
-            <div id="presupuesto-box" class="mt-4 inline-flex items-center gap-2 bg-black/25 backdrop-blur-sm border border-amber-300/30 rounded-xl px-3.5 py-1.5 text-xs text-amber-200 font-medium">
-                <span>🎁</span>
-                <span>Presupuesto sugerido: <strong id="presupuesto-val" class="text-white font-bold">$500 - $600 MXN</strong></span>
+
+            <!-- Contador de Días para Nochebuena & Presupuesto -->
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+                
+                <div id="countdown-pill" class="inline-flex items-center gap-1.5 bg-black/35 backdrop-blur-md border border-white/10 rounded-xl px-3 py-1.5 text-amber-200 font-medium">
+                    <span>⏳</span>
+                    <span id="countdown-text">Calculando días...</span>
+                </div>
+
+                <div id="presupuesto-box" class="inline-flex items-center gap-1.5 bg-black/35 backdrop-blur-md border border-amber-400/25 rounded-xl px-3 py-1.5 text-amber-100 font-medium">
+                    <span>🎁</span>
+                    <span>Tope: <strong id="presupuesto-val" class="text-amber-300 font-bold">$500 - $600</strong></span>
+                </div>
+
             </div>
+
         </div>
     </header>
 
-    <!-- NAVEGACIÓN TIPO PESTAÑAS (TABS) STICKY -->
-    <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm border-b border-stone-200">
-        <div class="max-w-md mx-auto grid grid-cols-3 p-1.5 gap-1 text-center text-xs font-bold">
-            <button id="tab-btn-regalos" onclick="cambiarTab('regalos')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all bg-red-700 text-white shadow-sm">
-                <span class="text-base">🎁</span>
+
+    <!-- BARRA DE NAVEGACIÓN FLOTANTE (ESTILO TABS SEGMENTADOS) -->
+    <nav class="sticky top-2 z-40 max-w-md mx-auto px-4 mt-3">
+        <div class="bg-white/95 backdrop-blur-md p-1.5 rounded-2xl shadow-cozy border border-stone-200/80 flex items-center gap-1 text-xs font-bold">
+            
+            <button id="tab-btn-regalos" onclick="cambiarTab('regalos')" class="flex-1 py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all bg-cozy-red text-white shadow-sm">
+                <span class="text-sm">🎁</span>
                 <span>Intercambio</span>
             </button>
-            <button id="tab-btn-cena" onclick="cambiarTab('cena')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100">
-                <span class="text-base">🍗</span>
-                <span>¿Quién lleva?</span>
+
+            <button id="tab-btn-cena" onclick="cambiarTab('cena')" class="flex-1 py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-600 hover:bg-stone-100/80">
+                <span class="text-sm">🍗</span>
+                <span>Cena & Fiesta</span>
             </button>
-            <button id="tab-btn-info" onclick="cambiarTab('info')" class="tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100">
-                <span class="text-base">📍</span>
-                <span>Lugar y Hora</span>
+
+            <button id="tab-btn-info" onclick="cambiarTab('info')" class="flex-1 py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-600 hover:bg-stone-100/80">
+                <span class="text-sm">📍</span>
+                <span>Ubicación</span>
             </button>
+
         </div>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="relative z-10 max-w-md mx-auto px-4 pt-4">
 
-        <!-- ========================================== -->
-        <!-- PESTAÑA 1: INTERCAMBIO (DESEOS Y TALLAS) -->
-        <!-- ========================================== -->
+    <!-- CONTENEDOR PRINCIPAL (MOBILE FIRST) -->
+    <main class="relative z-20 max-w-md mx-auto px-4 pt-4">
+
+        <!-- ======================================================== -->
+        <!-- PESTAÑA 1: INTERCAMBIO (TARJETAS DE DESEOS Y TALLAS) -->
+        <!-- ======================================================== -->
         <section id="tab-regalos" class="space-y-4">
             
-            <!-- Barra de Búsqueda Rápida -->
+            <!-- Buscador elegante con botón de borrado -->
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </div>
                 <input 
                     type="text" 
                     id="search-input" 
                     oninput="filtrarFamilia()"
-                    placeholder="Buscar a tu amigo secreto (ej. Carmen, Jorge)..." 
-                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-white border border-stone-200 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 shadow-sm"
+                    placeholder="Escribe el nombre de quien te tocó..." 
+                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-white border border-stone-200 text-stone-800 placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-cozy-red focus:border-transparent shadow-sm transition"
                 >
                 <button id="clear-search" onclick="limpiarBusqueda()" class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-stone-400 hover:text-stone-600">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
 
-            <!-- Contador de personas -->
-            <div class="flex items-center justify-between text-xs text-stone-500 px-1">
-                <span id="contador-personas">Cargando participantes...</span>
-                <span class="text-stone-400">Toca para ver detalles</span>
+            <!-- Contador de personas y ayuda rápida -->
+            <div class="flex items-center justify-between text-[11px] text-stone-500 px-1 font-medium">
+                <span id="contador-personas" class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                    Cargando lista...
+                </span>
+                <span class="text-stone-400">Toca para copiar gustos</span>
             </div>
 
-            <!-- Lista de Tarjetas de la Familia -->
+            <!-- Listado de Tarjetas -->
             <div id="lista-familia" class="space-y-4">
-                <!-- Se llena dinámicamente desde data.js -->
+                <!-- Inyectado dinámicamente con JavaScript -->
             </div>
 
             <!-- Estado sin resultados -->
-            <div id="no-results" class="hidden text-center py-12 bg-white rounded-3xl border border-dashed border-stone-300 p-6">
-                <span class="text-4xl">🔍</span>
-                <h3 class="font-bold text-stone-700 mt-2">No encontramos a esa persona</h3>
-                <p class="text-xs text-stone-500 mt-1">Verifica el nombre o limpia la búsqueda.</p>
-                <button onclick="limpiarBusqueda()" class="mt-3 px-4 py-1.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full hover:bg-red-200 transition">
-                    Ver a todos
+            <div id="no-results" class="hidden text-center py-12 bg-white rounded-3xl border border-stone-200 p-6 shadow-sm">
+                <div class="w-14 h-14 bg-red-50 text-red-700 rounded-full flex items-center justify-center mx-auto text-2xl mb-3">
+                    🎅
+                </div>
+                <h3 class="font-bold text-stone-800 text-sm">No encontramos a esa persona</h3>
+                <p class="text-xs text-stone-500 mt-1 max-w-xs mx-auto">Revisa cómo se escribe su nombre o presiona el botón para ver la lista completa.</p>
+                <button onclick="limpiarBusqueda()" class="mt-4 px-4 py-2 bg-stone-900 text-white text-xs font-semibold rounded-xl hover:bg-stone-800 transition shadow-sm">
+                    Ver a todos los participantes
                 </button>
             </div>
 
         </section>
 
 
-        <!-- ========================================== -->
-        <!-- PESTAÑA 2: ¿QUIÉN LLEVA QUÉ? (CENA / FIESTA) -->
-        <!-- ========================================== -->
+        <!-- ======================================================== -->
+        <!-- PESTAÑA 2: CENA Y ORGANIZACIÓN DE LA FIESTA -->
+        <!-- ======================================================== -->
         <section id="tab-cena" class="hidden space-y-4">
             
-            <div class="bg-gradient-to-r from-emerald-800 to-green-700 text-white rounded-2xl p-4 shadow-sm">
+            <!-- Banner de progreso de la cena -->
+            <div class="bg-gradient-to-r from-cozy-forest to-emerald-700 text-white rounded-3xl p-4 shadow-cozy border border-emerald-800">
                 <div class="flex items-center gap-3">
-                    <div class="text-3xl bg-white/20 p-2 rounded-xl">🍗</div>
-                    <div>
-                        <h2 class="font-bold text-base">Organización de la Cena</h2>
-                        <p class="text-emerald-100 text-xs mt-0.5">Para que no falte nada y nadie repita platillo</p>
+                    <div class="w-11 h-11 bg-white/15 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0">
+                        🥘
                     </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-bold text-sm text-emerald-100">Cena & Aportaciones</h2>
+                            <span id="cena-porcentaje" class="text-xs font-bold text-amber-300">100% listo</span>
+                        </div>
+                        <p class="text-emerald-200/90 text-xs mt-0.5">Quién lleva qué para que no falte nada</p>
+                    </div>
+                </div>
+
+                <!-- Barra de progreso visual -->
+                <div class="w-full bg-black/20 rounded-full h-1.5 mt-3 overflow-hidden">
+                    <div id="cena-progress-bar" class="bg-amber-400 h-full rounded-full transition-all duration-500" style="width: 80%"></div>
                 </div>
             </div>
 
-            <!-- Lista de categorías de comida/fiesta -->
-            <div id="lista-cena" class="space-y-4">
-                <!-- Se llena dinámicamente desde data.js -->
+            <!-- Listado de Categorías de Comida -->
+            <div id="lista-cena" class="space-y-3.5">
+                <!-- Se llena desde data.js -->
             </div>
 
         </section>
 
 
-        <!-- ========================================== -->
-        <!-- PESTAÑA 3: INFORMACIÓN DEL EVENTO -->
-        <!-- ========================================== -->
+        <!-- ======================================================== -->
+        <!-- PESTAÑA 3: UBICACIÓN Y HORARIOS -->
+        <!-- ======================================================== -->
         <section id="tab-info" class="hidden space-y-4">
             
-            <!-- Tarjeta Principal de Cita -->
-            <div class="bg-white rounded-3xl p-5 shadow-sm border border-stone-200 space-y-4">
+            <div class="bg-white rounded-3xl p-5 shadow-cozy border border-stone-200/80 space-y-5">
                 
-                <div class="flex items-center gap-3 border-b border-stone-100 pb-4">
-                    <div class="w-11 h-11 bg-red-100 text-red-700 rounded-2xl flex items-center justify-center text-xl font-bold">
+                <!-- Fecha y Hora -->
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 bg-red-50 border border-red-100 text-cozy-red rounded-2xl flex items-center justify-center text-xl shrink-0 shadow-sm">
                         📅
                     </div>
                     <div>
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">¿Cuándo?</span>
-                        <h3 id="info-fecha" class="font-bold text-stone-800 text-sm">24 de Diciembre</h3>
-                        <p id="info-hora" class="text-stone-500 text-xs">8:00 PM</p>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Fecha y Hora</span>
+                        <h3 id="info-fecha" class="font-bold text-stone-900 text-sm mt-0.5">24 de Diciembre, 2024</h3>
+                        <p id="info-hora" class="text-stone-500 text-xs mt-0.5 font-medium">8:00 PM en adelante</p>
                     </div>
                 </div>
 
-                <div class="flex items-start gap-3 border-b border-stone-100 pb-4">
-                    <div class="w-11 h-11 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center text-xl font-bold shrink-0">
+                <!-- Separador fino -->
+                <div class="border-t border-stone-100"></div>
+
+                <!-- Punto de Reunión -->
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 bg-emerald-50 border border-emerald-100 text-cozy-green rounded-2xl flex items-center justify-center text-xl shrink-0 shadow-sm">
                         🏡
                     </div>
                     <div class="flex-1">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">¿Dónde?</span>
-                        <h3 id="info-lugar" class="font-bold text-stone-800 text-sm">Casa de los Abuelos</h3>
-                        <p id="info-direccion" class="text-stone-600 text-xs mt-0.5">Calle Los Pinos #123</p>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Punto de Encuentro</span>
+                        <h3 id="info-lugar" class="font-bold text-stone-900 text-sm mt-0.5">Casa de los Abuelos</h3>
+                        <p id="info-direccion" class="text-stone-600 text-xs mt-0.5 leading-relaxed">Calle Los Pinos #123, Col. Centro</p>
                         
-                        <a id="info-maps-btn" href="#" target="_blank" class="mt-3.5 inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow-sm">
+                        <!-- Botón Google Maps -->
+                        <a id="info-maps-btn" href="#" target="_blank" class="mt-3.5 inline-flex items-center justify-center gap-2 w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-2xl text-xs font-bold transition shadow-sm active:scale-[0.98]">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-                            Abrir ubicación en Google Maps
+                            Abrir dirección en Google Maps
                         </a>
                     </div>
                 </div>
 
-                <!-- Avisos o recordatorios importantes -->
-                <div class="bg-amber-50 rounded-2xl p-3.5 border border-amber-200/80 text-amber-900 text-xs space-y-2">
-                    <div class="font-bold flex items-center gap-1.5 text-amber-950">
-                        <span>🔔</span> Recomendaciones para la noche:
-                    </div>
-                    <ul class="space-y-1 text-[11px] list-disc list-inside text-amber-900/90 leading-relaxed">
-                        <li>Llevar los regalos etiquetados con el nombre del destinatario.</li>
-                        <li>Traer suéter o cobijita abrigadora para la noche.</li>
-                        <li>¡Muchas ganas de convivir, cantar y pasarla en familia!</li>
+                <!-- Separador fino -->
+                <div class="border-t border-stone-100"></div>
+
+                <!-- Tips y Recordatorios -->
+                <div class="bg-amber-50/70 rounded-2xl p-4 border border-amber-200/70 text-amber-950">
+                    <h4 class="text-xs font-bold flex items-center gap-1.5 mb-2">
+                        <span>🔔</span> Recordatorios para todos:
+                    </h4>
+                    <ul class="text-[11px] space-y-1.5 text-amber-900/90 leading-relaxed list-disc list-inside">
+                        <li>Llevar tu regalo envuelto y con tarjeta o etiqueta clara.</li>
+                        <li>Venir bien abrigados para el momento de la piñata al aire libre.</li>
+                        <li>Si llevas comida que requiera calentarse, avisa con tiempo para coordinar el horno/estufa.</li>
                     </ul>
                 </div>
 
             </div>
 
-            <!-- Botón para compartir por WhatsApp -->
-            <button onclick="compartirWhatsApp()" class="w-full py-3.5 px-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition">
-                <span>💬</span> Reenviar enlace al grupo de WhatsApp
+            <!-- Botón Reenviar por WhatsApp -->
+            <button onclick="compartirWhatsApp()" class="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition active:scale-[0.98]">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                Compartir página en el grupo de WhatsApp
             </button>
 
         </section>
 
     </main>
 
-    <!-- TOAST NOTIFICACIÓN -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white text-xs py-2.5 px-4 rounded-full shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none">
-        Enlace copiado al portapapeles 📋
+
+    <!-- TOAST INFORMATIVO FLOTANTE -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-stone-900/95 backdrop-blur-md text-white text-xs py-2.5 px-4 rounded-full shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 border border-white/10">
+        <span id="toast-icon">📋</span>
+        <span id="toast-message">Copiado al portapapeles</span>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="mt-12 text-center text-xs text-stone-400 space-y-1">
-        <p>Hecho con ❤️ para la familia • ¡Felices Fiestas!</p>
+    <!-- PIE DE PÁGINA DISCRETO -->
+    <footer class="mt-14 text-center text-xs text-stone-400 space-y-1">
+        <p class="font-serif italic text-stone-500">"El mejor regalo es estar juntos"</p>
+        <p class="text-[11px] text-stone-400">Navidad en Familia • Hecho con cariño ❤️</p>
     </footer>
 
-    <!-- SCRIPT DE DATOS -->
+    <!-- SCRIPT DE DATOS EXTERNOS -->
     <script src="data.js"></script>
 
-    <!-- SCRIPT DE INTERACTIVIDAD -->
+    <!-- SCRIPT DE LÓGICA & INTERACCIÓN -->
     <script>
-        // Inicializar datos en la vista
         document.addEventListener('DOMContentLoaded', () => {
-            cargarEncabezado();
+            initHeaderAndCountdown();
             renderFamilia(FAMILIA);
             renderCena();
-            generarNieve();
+            initSnowEffect();
         });
 
-        // 1. Cargar info del evento
-        function cargarEncabezado() {
+        // 1. Cabecera y Cuenta Regresiva Automática a Nochebuena (24 de Dic)
+        function initHeaderAndCountdown() {
             if (typeof INFO_EVENTO !== 'undefined') {
                 if (INFO_EVENTO.titulo) document.getElementById('header-title').innerText = INFO_EVENTO.titulo;
                 if (INFO_EVENTO.subtitulo) document.getElementById('header-subtitle').innerText = INFO_EVENTO.subtitulo;
@@ -262,57 +345,85 @@
                     document.getElementById('presupuesto-box').classList.add('hidden');
                 }
 
-                // Pestaña Info
-                document.getElementById('info-fecha').innerText = INFO_EVENTO.fecha || '';
-                document.getElementById('info-hora').innerText = INFO_EVENTO.hora || '';
-                document.getElementById('info-lugar').innerText = INFO_EVENTO.lugar || '';
+                // Datos de Ubicación
+                document.getElementById('info-fecha').innerText = INFO_EVENTO.fecha || '24 de Diciembre';
+                document.getElementById('info-hora').innerText = INFO_EVENTO.hora || '8:00 PM';
+                document.getElementById('info-lugar').innerText = INFO_EVENTO.lugar || 'Casa Familiar';
                 document.getElementById('info-direccion').innerText = INFO_EVENTO.direccion || '';
-                
                 if (INFO_EVENTO.googleMapsUrl) {
                     document.getElementById('info-maps-btn').href = INFO_EVENTO.googleMapsUrl;
                 }
             }
+
+            // Calcular días restantes para el 24 de Diciembre
+            const ahora = new Date();
+            let añoMeta = ahora.getFullYear();
+            const nochebuena = new Date(añoMeta, 11, 24); // Mes 11 es Diciembre
+
+            // Si ya pasó el 24 de dic de este año, poner el próximo
+            if (ahora > nochebuena && ahora.getDate() > 25) {
+                nochebuena.setFullYear(añoMeta + 1);
+            }
+
+            const diffMs = nochebuena - ahora;
+            const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            const countdownEl = document.getElementById('countdown-text');
+
+            if (diffDias > 1) {
+                countdownEl.innerText = `Faltan ${diffDias} días para Nochebuena`;
+            } else if (diffDias === 1) {
+                countdownEl.innerText = `¡Mañana es Nochebuena! 🎅`;
+            } else if (diffDias === 0) {
+                countdownEl.innerText = `¡Hoy es Nochebuena! 🎉`;
+            } else {
+                countdownEl.innerText = `¡Feliz Navidad! 🎄`;
+            }
         }
 
-        // 2. Renderizar lista de la Familia para el Intercambio
+        // 2. Renderizado de las Tarjetas de la Familia
         function renderFamilia(lista) {
             const container = document.getElementById('lista-familia');
             const noResults = document.getElementById('no-results');
             const contador = document.getElementById('contador-personas');
 
             container.innerHTML = '';
-            contador.innerText = `${lista.length} participante${lista.length === 1 ? '' : 's'}`;
+            contador.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                <span>${lista.length} participante${lista.length === 1 ? '' : 's'}</span>
+            `;
 
-            if (lista.length === 0) {
+            if (!lista || lista.length === 0) {
                 noResults.classList.remove('hidden');
                 return;
             } else {
                 noResults.classList.add('hidden');
             }
 
-            lista.forEach((persona) => {
+            lista.forEach((persona, index) => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-stone-200/90 transition hover:shadow-md";
+                card.className = "bg-white rounded-3xl p-4 sm:p-5 shadow-cozy border border-stone-200/90 transition-all duration-200 hover:shadow-md";
 
-                // Formatear tallas
+                // Badges de Tallas
                 let tallasHtml = '';
                 if (persona.tallas && Object.keys(persona.tallas).length > 0) {
                     const badges = Object.entries(persona.tallas).map(([tipo, val]) => {
                         let icono = '👕';
-                        if (tipo.toLowerCase().includes('calzado') || tipo.toLowerCase().includes('zapato')) icono = '👟';
-                        if (tipo.toLowerCase().includes('pantalon') || tipo.toLowerCase().includes('pantalón')) icono = '👖';
-                        
+                        const t = tipo.toLowerCase();
+                        if (t.includes('calzado') || t.includes('zapato') || t.includes('tenis')) icono = '👟';
+                        if (t.includes('pantalon') || t.includes('pantalón') || t.includes('jeans')) icono = '👖';
+                        if (t.includes('chamarra') || t.includes('sueter') || t.includes('abrigo')) icono = '🧥';
+
                         return `
-                            <div class="bg-stone-50 border border-stone-200/80 rounded-xl px-2.5 py-1.5 text-center">
-                                <span class="text-[10px] uppercase font-bold text-stone-400 block">${tipo}</span>
-                                <span class="text-xs font-bold text-stone-800">${icono} ${val}</span>
+                            <div class="bg-stone-50/80 border border-stone-200/70 rounded-xl px-2 py-1.5 text-center">
+                                <span class="text-[9px] uppercase font-bold text-stone-400 block tracking-tight">${tipo}</span>
+                                <span class="text-xs font-bold text-stone-800 leading-tight block mt-0.5">${icono} ${val}</span>
                             </div>
                         `;
                     }).join('');
 
                     tallasHtml = `
-                        <div class="mt-3">
-                            <span class="text-[11px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">Tallas:</span>
+                        <div class="mt-3.5 pt-3 border-t border-stone-100">
+                            <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1.5">Tallas registradas:</span>
                             <div class="grid grid-cols-3 gap-1.5">
                                 ${badges}
                             </div>
@@ -320,18 +431,19 @@
                     `;
                 }
 
-                // Lo que SÍ desea
+                // Lista de Deseos (SÍ)
                 let siHtml = '';
                 if (persona.siDesea && persona.siDesea.length > 0) {
-                    const items = persona.siDesea.map(d => `
+                    const items = persona.siDesea.map(item => `
                         <li class="flex items-start gap-2 text-xs text-stone-700">
-                            <span class="text-emerald-600 font-bold shrink-0 mt-0.5">✓</span>
-                            <span>${d}</span>
+                            <span class="text-emerald-700 font-extrabold shrink-0 mt-0.5 text-xs">✓</span>
+                            <span class="leading-relaxed">${item}</span>
                         </li>
                     `).join('');
+
                     siHtml = `
-                        <div class="mt-3.5 bg-emerald-50/70 border border-emerald-100 rounded-2xl p-3">
-                            <div class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                        <div class="mt-3 bg-emerald-50/60 border border-emerald-100/90 rounded-2xl p-3">
+                            <div class="text-[10px] font-bold text-cozy-forest uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
                                 <span>🎁</span> Lo que SÍ le gustaría:
                             </div>
                             <ul class="space-y-1.5">
@@ -341,19 +453,20 @@
                     `;
                 }
 
-                // Lo que NO desea
+                // Lista de Evitar (NO)
                 let noHtml = '';
                 if (persona.noDesea && persona.noDesea.length > 0) {
-                    const items = persona.noDesea.map(d => `
-                        <li class="flex items-start gap-2 text-xs text-red-800">
-                            <span class="text-red-500 font-bold shrink-0 mt-0.5">✕</span>
-                            <span>${d}</span>
+                    const items = persona.noDesea.map(item => `
+                        <li class="flex items-start gap-2 text-xs text-red-900/90">
+                            <span class="text-red-500 font-bold shrink-0 mt-0.5 text-xs">✕</span>
+                            <span class="leading-relaxed">${item}</span>
                         </li>
                     `).join('');
+
                     noHtml = `
-                        <div class="mt-2.5 bg-red-50/70 border border-red-100 rounded-2xl p-3">
-                            <div class="text-[11px] font-bold text-red-800 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                                <span>⛔</span> Por favor evitar (NO):
+                        <div class="mt-2.5 bg-red-50/50 border border-red-100/80 rounded-2xl p-3">
+                            <div class="text-[10px] font-bold text-cozy-red uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                                <span>⛔</span> Por favor NO regalar:
                             </div>
                             <ul class="space-y-1.5">
                                 ${items}
@@ -362,25 +475,34 @@
                     `;
                 }
 
-                // Gustos extras
+                // Gustos adicionales o tips
                 let gustosHtml = '';
                 if (persona.gustosExtras) {
                     gustosHtml = `
-                        <div class="mt-3 text-[11px] text-stone-500 italic bg-stone-50 p-2.5 rounded-xl border border-stone-100">
-                            💡 <strong>Tip / Hobbies:</strong> ${persona.gustosExtras}
+                        <div class="mt-2.5 text-[11px] text-stone-600 bg-stone-50 border border-stone-200/60 p-2.5 rounded-xl flex items-start gap-2">
+                            <span class="shrink-0 text-amber-600">💡</span>
+                            <span class="leading-relaxed"><strong>Tip:</strong> ${persona.gustosExtras}</span>
                         </div>
                     `;
                 }
 
                 card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-2xl shadow-inner shrink-0">
-                            ${persona.avatar || '🎁'}
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <!-- Avatar con halo festivo -->
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-100 via-amber-50 to-red-50 border border-amber-200/70 flex items-center justify-center text-2xl shadow-inner shrink-0">
+                                ${persona.avatar || '🎄'}
+                            </div>
+                            <div class="min-w-0">
+                                <h3 class="font-bold text-stone-900 text-base truncate">${persona.nombre}</h3>
+                                ${persona.apodo ? `<p class="text-xs text-stone-400 font-medium truncate">${persona.apodo}</p>` : ''}
+                            </div>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-bold text-stone-900 text-base truncate">${persona.nombre}</h3>
-                            ${persona.apodo ? `<p class="text-xs text-stone-400 font-medium truncate">${persona.apodo}</p>` : ''}
-                        </div>
+
+                        <!-- Botón para copiar ficha individual de deseos -->
+                        <button onclick="copiarFicha('${persona.id || index}')" title="Copiar gustos" class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-xl transition shrink-0" aria-label="Copiar gustos">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
                     </div>
 
                     ${tallasHtml}
@@ -393,7 +515,7 @@
             });
         }
 
-        // 3. Filtrar personas en tiempo real
+        // 3. Filtrado en tiempo real
         function filtrarFamilia() {
             const input = document.getElementById('search-input');
             const clearBtn = document.getElementById('clear-search');
@@ -424,35 +546,42 @@
             input.focus();
         }
 
-        // 4. Renderizar lista de la Cena / Organización
+        // 4. Renderizado de la Cena & Fiesta
         function renderCena() {
             const container = document.getElementById('lista-cena');
             container.innerHTML = '';
 
             if (typeof ORGANIZACION_CENA === 'undefined' || ORGANIZACION_CENA.length === 0) {
-                container.innerHTML = '<p class="text-center text-xs text-stone-400">Sin asignar aún.</p>';
+                container.innerHTML = '<p class="text-center text-xs text-stone-400 py-6">No hay elementos configurados en la cena aún.</p>';
                 return;
             }
 
+            let totalItems = 0;
+            let confirmados = 0;
+
             ORGANIZACION_CENA.forEach(cat => {
                 const catCard = document.createElement('div');
-                catCard.className = "bg-white rounded-3xl p-4 shadow-sm border border-stone-200";
+                catCard.className = "bg-white rounded-3xl p-4 shadow-cozy border border-stone-200/80";
 
                 const itemsHtml = cat.items.map(item => {
-                    const isConfirmado = (item.estado || '').toLowerCase() === 'confirmado';
-                    const badgeClass = isConfirmado 
-                        ? 'bg-emerald-100 text-emerald-800 border-emerald-200' 
-                        : 'bg-amber-100 text-amber-800 border-amber-200';
+                    totalItems++;
+                    const isConf = (item.estado || '').toLowerCase() === 'confirmado';
+                    if (isConf) confirmados++;
+
+                    const badgeClass = isConf 
+                        ? 'bg-emerald-50 text-cozy-forest border-emerald-200' 
+                        : 'bg-amber-50 text-amber-800 border-amber-200';
 
                     return `
                         <div class="py-2.5 border-b border-stone-100 last:border-0 flex items-start justify-between gap-3">
                             <div class="flex-1">
                                 <p class="text-xs font-bold text-stone-800 leading-snug">${item.tarea}</p>
-                                <p class="text-[11px] text-stone-500 mt-0.5 flex items-center gap-1">
-                                    <span>👤</span> Encargado: <strong class="text-stone-700">${item.encargado}</strong>
+                                <p class="text-[11px] text-stone-500 mt-0.5 flex items-center gap-1.5 font-medium">
+                                    <span class="text-stone-400">👤</span>
+                                    <span>Lleva: <strong class="text-stone-700">${item.encargado}</strong></span>
                                 </p>
                             </div>
-                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full border ${badgeClass} shrink-0">
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${badgeClass} shrink-0">
                                 ${item.estado || 'Pendiente'}
                             </span>
                         </div>
@@ -460,10 +589,14 @@
                 }).join('');
 
                 catCard.innerHTML = `
-                    <h3 class="font-bold text-stone-800 text-sm border-b border-stone-100 pb-2 mb-2 flex items-center justify-between">
-                        <span>${cat.categoria}</span>
-                        <span class="text-[11px] font-normal text-stone-400">${cat.items.length} items</span>
-                    </h3>
+                    <div class="border-b border-stone-100 pb-2 mb-2 flex items-center justify-between">
+                        <h3 class="font-bold text-stone-800 text-xs sm:text-sm flex items-center gap-1.5">
+                            ${cat.categoria}
+                        </h3>
+                        <span class="text-[10px] font-semibold text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">
+                            ${cat.items.length} cosas
+                        </span>
+                    </div>
                     <div class="divide-y divide-stone-50">
                         ${itemsHtml}
                     </div>
@@ -471,47 +604,91 @@
 
                 container.appendChild(catCard);
             });
+
+            // Actualizar barra de progreso
+            if (totalItems > 0) {
+                const pct = Math.round((confirmados / totalItems) * 100);
+                document.getElementById('cena-porcentaje').innerText = `${confirmados}/${totalItems} confirmados (${pct}%)`;
+                document.getElementById('cena-progress-bar').style.width = `${pct}%`;
+            }
         }
 
-        // 5. Cambio de Tabs
+        // 5. Cambio fluido entre pestañas
         function cambiarTab(tab) {
             const tabs = ['regalos', 'cena', 'info'];
             tabs.forEach(t => {
-                const section = document.getElementById(`tab-${t}`);
+                const sec = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (t === tab) {
-                    section.classList.remove('hidden');
-                    btn.className = "tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all bg-red-700 text-white shadow-sm font-bold";
+                    sec.classList.remove('hidden');
+                    btn.className = "flex-1 py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all bg-cozy-red text-white shadow-sm font-bold";
                 } else {
-                    section.classList.add('hidden');
-                    btn.className = "tab-btn py-2.5 px-2 rounded-xl flex flex-col sm:flex-row items-center justify-center gap-1 transition-all text-stone-600 hover:bg-stone-100 font-bold";
+                    sec.classList.add('hidden');
+                    btn.className = "flex-1 py-2.5 px-2 rounded-xl flex items-center justify-center gap-1.5 transition-all text-stone-600 hover:bg-stone-100/80 font-bold";
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 6. Compartir por WhatsApp
+        // 6. Copiar ficha individual de deseos para pegarla en notas o WhatsApp
+        function copiarFicha(idOrIndex) {
+            const persona = FAMILIA.find((p, idx) => p.id === idOrIndex || idx === parseInt(idOrIndex));
+            if (!persona) return;
+
+            let texto = `🎁 *GUSTOS DE ${persona.nombre.toUpperCase()}* 🎁\n`;
+            if (persona.tallas) {
+                texto += `👕 Tallas: ${Object.entries(persona.tallas).map(([k,v]) => `${k}: ${v}`).join(', ')}\n`;
+            }
+            if (persona.siDesea && persona.siDesea.length) {
+                texto += `✅ Lo que SÍ: \n - ${persona.siDesea.join('\n - ')}\n`;
+            }
+            if (persona.noDesea && persona.noDesea.length) {
+                texto += `⛔ Evitar (NO): \n - ${persona.noDesea.join('\n - ')}\n`;
+            }
+
+            navigator.clipboard.writeText(texto).then(() => {
+                mostrarToast(`Gustos de ${persona.nombre} copiados 📋`);
+            }).catch(() => {
+                mostrarToast('Listo para compartir');
+            });
+        }
+
+        // 7. Compartir al grupo de WhatsApp
         function compartirWhatsApp() {
             const url = window.location.href;
-            const texto = `🎄 *${INFO_EVENTO.titulo || 'Navidad en Familia'}* 🎄\nAquí están las tallas, deseos del intercambio y lo que le toca llevar a cada quién a la cena:\n👉 ${url}`;
+            const texto = `🎄 *${INFO_EVENTO.titulo || 'Navidad en Familia'}* 🎄\n\nAquí pueden consultar las tallas de ropa, gustos del intercambio y qué nos toca llevar a cada quién a la cena:\n👉 ${url}`;
             const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
             window.open(waUrl, '_blank');
         }
 
-        // 7. Efecto ligero de copos de nieve
-        function generarNieve() {
-            const snowContainer = document.getElementById('snow-container');
-            const totalDots = 18; // Muy pocos para no alentar teléfonos móviles
-            for (let i = 0; i < totalDots; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'snow-dot';
-                const size = Math.random() * 4 + 2;
-                dot.style.width = `${size}px`;
-                dot.style.height = `${size}px`;
-                dot.style.left = `${Math.random() * 100}vw`;
-                dot.style.animationDuration = `${Math.random() * 6 + 6}s`;
-                dot.style.animationDelay = `${Math.random() * 5}s`;
-                snowContainer.appendChild(dot);
+        // 8. Mensaje Toast
+        function mostrarToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('opacity-0', 'translate-y-2');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-2');
+            }, 2500);
+        }
+
+        // 9. Nieve ligera (solo 12 copos flotantes para cero lentitud en móviles)
+        function initSnowEffect() {
+            const container = document.getElementById('snow-field');
+            const totalSnow = 12;
+            const flakes = ['❄', '❅', '•', '✨'];
+
+            for (let i = 0; i < totalSnow; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.innerText = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = `${Math.random() * 100}vw`;
+                flake.style.animationDuration = `${Math.random() * 7 + 8}s`;
+                flake.style.animationDelay = `${Math.random() * 5}s`;
+                flake.style.fontSize = `${Math.random() * 8 + 10}px`;
+                container.appendChild(flake);
             }
         }
     </script>
