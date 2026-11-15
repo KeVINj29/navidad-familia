@@ -139,11 +139,19 @@ const FAMILIA = [
             pantalon: "Talla 3 o 5",
             calzado: "Del 4 MX"
         },
-/*        siDesea: [
-            // "Idea 1",
-            // "Idea 2"
+        siDesea: [
+            "Blusa café manga larga con volantes / asimétrica",
+            "Jeans anchos con cintura en dos tonos doblada",
+            "Tenis casuales deportivos grises",
+            "Tenis casuales blancos con azul y suela beige"
         ],
-        noDesea: [
+        fotos: [
+            { url: "img/wendy_blusa.jpg", titulo: "Blusa café con volantes" },
+            { url: "img/wendy_jeans.jpg", titulo: "Jeans anchos dos tonos" },
+            { url: "img/wendy_tenis_gris.jpg", titulo: "Tenis grises" },
+            { url: "img/wendy_tenis_azul.jpg", titulo: "Tenis blancos con azul" }
+        ],
+/*        noDesea: [
             // "Evitar esto",
             // "Evitar aquello"
         ],
@@ -201,6 +209,48 @@ const FAMILIA = [
             playera: "Grande (G)",
             pantalon: "Talla 34",
             calzado: "Del 7 MX (tenis)"
+        },
+/*        siDesea: [
+            // "Idea 1",
+            // "Idea 2"
+        ],
+        noDesea: [
+            // "Evitar esto",
+            // "Evitar aquello"
+        ],
+        gustosExtras: ""
+        */
+    },
+    {
+        id: "Alondra",
+        nombre: "Alondra",
+//        apodo: "",
+        avatar: "👩‍🦰",
+        tallas: {
+            blusa: "Mediana o Grande (M o G)",
+            pantalon: "Talla 15",
+            calzado: "8.5 MX (tenis)"
+        },
+/*        siDesea: [
+            // "Idea 1",
+            // "Idea 2"
+        ],
+        noDesea: [
+            // "Evitar esto",
+            // "Evitar aquello"
+        ],
+        gustosExtras: ""
+        */
+    },
+    {
+        id: "Juanito",
+        nombre: "Juanito",
+//        apodo: "",
+        avatar: "👦",
+        tallas: {
+            playera: "Mediana (M)",
+            pantalon: "Talla 32",
+            calzado: "Del 7 MX (zapatos)"
         },
 /*        siDesea: [
             // "Idea 1",
